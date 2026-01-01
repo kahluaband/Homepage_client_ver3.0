@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@font-face {
+  font-family: 'mustica pro';
+  src: url('/fonts/MusticaPro.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  line-height: 150%;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'pretendard';
+  src: url('/fonts/Pretendard.woff') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  line-height: 150%;
+  font-display: swap;
+}
+
+body {
+  font-family: 'mustica pro', 'pretendard'; /* Font priority setting */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  word-break: keep-all;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animation-pause {
+    animation-play-state: paused;
+  }
+}
+
+.image-upload-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-upload-scrollbar::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 99px;
+  border: 1px solid #cbcdd7;
+}
+
+.image-upload-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbcdd7;
+  border-radius: 99px;
+}
+
+.image-upload-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #aeb1c1; /* 호버 시 */
+}
+
+.table-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.table-scrollbar::-webkit-scrollbar-thumb {
+  background: #d9d9d9;
+  border-radius: 10px;
+}
+
+.table-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c3c3c3;
+}
+
+@media (max-width: 833px) {
+  .table-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+}
