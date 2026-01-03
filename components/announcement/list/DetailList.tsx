@@ -26,9 +26,12 @@ export const DetailList = ({
     <div>
       <ul>
         {data.map((post) => {
-          const activeCommentsCount =
-            post.comments?.filter((comment) => comment.deletedAt === null)
-              .length || 0;
+          // const activeCommentsCount =
+          //   post.comments?.filter((comment) => comment.deletedAt === null)
+          //     .length || 0;
+
+          console.log('post.comments', post.commentsCount);
+          console.log('데이터구조', data[0]);
 
           return (
             <li
@@ -47,7 +50,7 @@ export const DetailList = ({
                   </div>
                   <div className="flex gap-[10px]">
                     <Image src={chatIcon} alt="chat" width={18} height={18} />
-                    <p>{activeCommentsCount}</p>
+                    <p>{post.commentsCount}</p>
                   </div>
                 </div>
                 {/* CommunityProps 전용 */}

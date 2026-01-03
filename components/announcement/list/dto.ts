@@ -10,6 +10,7 @@ export interface AnnouncementProps {
   likes: number;
   comments: Comment[];
   created_at: string;
+  commentsCount: number;
 }
 
 export interface CommunityProps {
@@ -19,6 +20,7 @@ export interface CommunityProps {
   comments: Comment[];
   created_at: string;
   writer: string;
+  commentsCount: number;
 }
 
 export interface ToggleProps {
