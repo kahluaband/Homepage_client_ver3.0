@@ -53,7 +53,7 @@ const OtherInfo = ({ onInfoChange, OtherInfo }: OtherInfoProps) => {
         option1="참석"
         option2="미참석"
         seletion={handleAfterpartyChange}
-        className="mt-6"
+        className="mt-6 cursor-pointer"
       />
     </div>
   );

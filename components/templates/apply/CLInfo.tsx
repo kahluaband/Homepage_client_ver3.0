@@ -94,7 +94,7 @@ const CLInfo = ({ onInfoChange, CoverLetterInfo }: CLInfoProps) => {
         option4={Session[3].toString()}
         option5={Session[4].toString()}
         selection={handleSessionChange}
-        className="mt-6"
+        className="mt-6 cursor-pointer"
       />
       {isVocalSelected && (
         <div className="mt-6 text-red-500 text-[16px]">
