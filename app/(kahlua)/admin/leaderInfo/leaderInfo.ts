@@ -21,7 +21,7 @@ export const leaderInfoList: InputFieldType[] = [
     label: 'phoneNumber',
     type: 'text',
     required: true,
-    inputType: 'number',
+    inputType: 'text',
   },
   {
     title: '이메일',
@@ -35,7 +35,7 @@ export const leaderInfoList: InputFieldType[] = [
 export const defaultData = {
   // [todo] api 연결
   term: '23',
-  name: '송강규',
-  phoneNumber: '01012345678',
-  email: 'yyoo04@naver.com',
+  name: '깔기장',
+  phoneNumber: '010-9999-9999',
+  email: 'kahlua@kahlua.com',
 };
