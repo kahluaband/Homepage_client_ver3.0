@@ -2,13 +2,6 @@ import { InputFieldType } from '@/components/ui/admin/type';
 
 export const recruitingInfoList: InputFieldType[] = [
   {
-    title: '기수',
-    label: 'term',
-    type: 'integer',
-    required: true,
-    inputType: 'number',
-  },
-  {
     title: '모집 시작일',
     label: 'startDate',
     type: 'datetime',
