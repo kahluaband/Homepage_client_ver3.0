@@ -1,8 +1,5 @@
 'use client';
 
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { useParams, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -24,19 +21,8 @@ import AdminButton from '@/components/ui/admin/Button';
 import ImageBox from '@/components/ui/admin/ImageBox';
 import TicketInfoList from '@/components/ui/admin/TicketInfo';
 import Banner from '@/components/ui/Banner';
+import { toLocalInput, toUtcPayload } from '@/utils/timeZoneUtils';
 
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-const toLocalInput = (utcLike?: string) => {
-  if (!utcLike) return '';
-  return dayjs.utc(utcLike).tz('Asia/Seoul').format('YYYY-MM-DDTHH:mm');
-};
-
-const toUtcPayload = (localKst?: string) => {
-  if (!localKst) return '';
-  return dayjs.tz(localKst, 'Asia/Seoul').utc().format('YYYY-MM-DDTHH:mm:ss');
-};
 
 const EditPerformancePage = () => {
   const params = useParams();
