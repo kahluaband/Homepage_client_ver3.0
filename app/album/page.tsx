@@ -10,11 +10,7 @@ const page = () => {
           type="KAHLUA"
           thumbnailUrl="/image/album/thumbnail_ex.jpg"
         />
-        <AlbumFolder
-          type="CREW"
-          crewNumber={22}
-          thumbnailUrl="/image/album/thumbnail_ex.jpg"
-        />
+        <AlbumFolder type="CREW" thumbnailUrl="/image/album/thumbnail_ex.jpg" />
       </div>
     </div>
   );
