@@ -44,9 +44,9 @@ const Dropdown = ({ options, value, onChange }: DropdownProps) => {
         <button
           type="button"
           onClick={() => setOpen((p) => !p)}
-          className="flex w-full items-center justify-between px-3 py-2 text-[16px] font-medium text-black hover:bg-gray-1"
+          className="flex w-full items-center justify-between px-3 py-2 font-medium text-black hover:bg-gray-1"
         >
-          <span className="text-base font-medium">{selected}</span>
+          <span className="text-md font-medium">{selected}</span>
           <Image
             src={open ? ChevronUp : ChevronDown}
             alt=""
