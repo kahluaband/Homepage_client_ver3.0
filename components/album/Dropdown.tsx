@@ -63,7 +63,7 @@ const Dropdown = ({ options, value, onChange }: DropdownProps) => {
             '-mt-[1.5px]',
             'flex flex-col',
             'border-[1.5px] border-blue-main border-t-0',
-            'rounded-b-lg bg-gray-0'
+            'rounded-b-lg bg-gray-0 pb-3 pt-1'
           )}
         >
           {options.map((opt) => (
