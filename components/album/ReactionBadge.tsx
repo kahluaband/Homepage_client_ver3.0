@@ -34,7 +34,7 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
   return (
     <div
       className={`
-        flex items-center gap-2 z-0 rounded-full dt:w-20 w-16 h-fit transition-all justify-between p-2 pr-3 hover:bg-yellow-dark
+        flex items-center gap-2 z-0 rounded-full dt:w-20 w-16 h-fit transition-all justify-between p-2 pr-3 hover:bg-yellow-dark cursor-pointer 
         ${
           isSelected
             ? 'shadow-[inset_0_0_0_2px_#FFB800] bg-yellow-dark' // 선택된 상태: 노란 보더

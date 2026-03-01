@@ -41,7 +41,7 @@ const ReactionSelector: React.FC = () => {
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="focus:outline-none transition-transform active:scale-90"
+        className="focus:outline-none transition-transform active:scale-90 cursor-pointer"
       >
         <img
           src={getHeartImage()}
