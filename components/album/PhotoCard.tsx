@@ -21,7 +21,7 @@ const PhotoCard = ({
     <div
       onClick={onClick}
       className={`
-        relative aspect-square w-full rounded-xl overflow-hidden cursor-pointer transition-all
+        relative aspect-square p-4 w-auto rounded-xl overflow-hidden cursor-pointer transition-all
       `}
     >
       {/* 1. 배경 이미지 */}
@@ -53,7 +53,7 @@ const PhotoCard = ({
 
           {/* 오른쪽 상단 카테고리 뱃지 */}
           <div className="flex justify-end">
-            <span className="bg-gray-0/70 border-2 border-gray-0 px-4 py-1.5 rounded-full text-sm font-medium text-black">
+            <span className="bg-gray-0/70 border-2 border-gray-0 px-3 py-1 rounded-full text-sm font-semibold text-black">
               {category}
             </span>
           </div>
