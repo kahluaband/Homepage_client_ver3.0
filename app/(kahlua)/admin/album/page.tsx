@@ -1,5 +1,6 @@
 import Banner from '@/components/about/Banner';
 import AlbumFolder from '@/components/album/AlbumFolder';
+import ReactionSelector from '@/components/album/ReactionSelector';
 
 const page = () => {
   return (
@@ -11,6 +12,9 @@ const page = () => {
           thumbnailUrl="/image/album/thumbnail_ex.jpg"
         />
         <AlbumFolder type="CREW" thumbnailUrl="/image/album/thumbnail_ex.jpg" />
+      </div>
+      <div className="flex justify-end mt-20">
+        <ReactionSelector />
       </div>
     </div>
   );
