@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
@@ -15,7 +16,6 @@ type DropdownProps = {
   options: DropdownOption[];
   value: string;
   onChange: (value: string) => void;
-  className?: string;
 };
 
 const Dropdown = ({ options, value, onChange }: DropdownProps) => {
@@ -34,23 +34,38 @@ const Dropdown = ({ options, value, onChange }: DropdownProps) => {
   }, []);
 
   return (
-    <div className="w-[130px] rounded-lg border-[1.5px] border-blue-main bg-gray-0 overflow-hidden">
-      <button
-        type="button"
-        onClick={() => setOpen((p) => !p)}
-        className="flex w-full items-center justify-between px-3 py-2 text-[16px] font-medium text-black hover:bg-gray-1"
+    <div ref={wrapRef} className="relative w-[130px]">
+      <div
+        className={clsx(
+          'w-[130px] border-[1.5px] border-blue-main bg-gray-0 overflow-hidden',
+          open ? 'rounded-t-lg border-b-0' : 'rounded-lg'
+        )}
       >
-        <span className="text-md font-medium">{selected}</span>
-        <Image
-          src={open ? ChevronUp : ChevronDown}
-          alt=""
-          width={24}
-          height={24}
-          className="shrink-0"
-        />
-      </button>
+        <button
+          type="button"
+          onClick={() => setOpen((p) => !p)}
+          className="flex w-full items-center justify-between px-3 py-2 text-[16px] font-medium text-black hover:bg-gray-1"
+        >
+          <span className="text-base font-medium">{selected}</span>
+          <Image
+            src={open ? ChevronUp : ChevronDown}
+            alt=""
+            width={24}
+            height={24}
+            className="shrink-0"
+          />
+        </button>
+      </div>
       {open && (
-        <ul className="flex flex-col gap-1 pb-2 pt-1 border-blue-main">
+        <ul
+          className={clsx(
+            'absolute left-0 top-full z-50 w-[130px]',
+            '-mt-[1.5px]',
+            'flex flex-col',
+            'border-[1.5px] border-blue-main border-t-0',
+            'rounded-b-lg bg-gray-0'
+          )}
+        >
           {options.map((opt) => (
             <li key={opt.value}>
               <button
@@ -59,13 +74,13 @@ const Dropdown = ({ options, value, onChange }: DropdownProps) => {
                   onChange(opt.value);
                   setOpen(false);
                 }}
-                className={`
-              w-full px-3 py-2 text-left
-              text-[16px] font-medium leading-tight
-              transition-colors
-              hover:bg-gray-1 hover:text-blue-main
-              ${opt.value === value ? 'text-blue-main' : 'text-black'}
-            `}
+                className={clsx(
+                  'w-full px-3 py-1 text-left',
+                  'text-base font-medium',
+                  'transition-colors',
+                  'hover:bg-gray-1 hover:text-blue-main',
+                  opt.value === value ? 'text-blue-main' : 'text-black'
+                )}
               >
                 {opt.label}
               </button>
