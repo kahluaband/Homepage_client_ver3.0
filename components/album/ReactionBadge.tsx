@@ -34,7 +34,7 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
   return (
     <div
       className={`
-        inline-flex items-center gap-2 z-0 rounded-full w-25 h-fit transition-all p-2 hover:bg-yellow-dark
+        flex items-center gap-2 z-0 rounded-full dt:w-20 w-16 h-fit transition-all justify-between p-2 pr-3 hover:bg-yellow-dark
         ${
           isSelected
             ? 'shadow-[inset_0_0_0_2px_#FFB800] bg-yellow-dark' // 선택된 상태: 노란 보더
@@ -44,19 +44,20 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
       onClick={onClick}
     >
       {/* 아이콘 배경 (흰색 원) */}
-      <div className="flex items-center justify-center w-8 h-8 bg-[#ffff] rounded-full flex-shrink-0 p-1">
+      <div className="flex items-center justify-center dt:w-8 dt:h-8 w-6 h-6 bg-gray-0 rounded-full flex-shrink-0 p-1">
         {reactionIcon && (
           <img
             src={reactionIcon.src}
             alt={type}
-            // w-full h-full을 사용해도 부모의 p-1 때문에 흰색 여백이 남습니다.
             className="w-full h-full object-contain"
           />
         )}
       </div>
 
       {/* 숫자 표시 */}
-      <span className="text-base font-bold text-black pr-2">{count}</span>
+      <span className="text-base font-bold dt:text-lg text-sm text-black flex justify-end items-end">
+        {count}
+      </span>
     </div>
   );
 };

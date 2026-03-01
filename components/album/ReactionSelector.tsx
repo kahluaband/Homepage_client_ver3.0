@@ -46,13 +46,13 @@ const ReactionSelector: React.FC = () => {
         <img
           src={getHeartImage()}
           alt="heart icon"
-          className="w-12.25 h-12.25 object-contain"
+          className="dt:w-12 dt:h-12 w-10 h-10 object-contain"
         />
       </button>
 
       {/* 리액션 선택 바: 반응 호버/클릭 디자인 반영 */}
       {isOpen && (
-        <div className="absolute z-10 w-72 h-13 -top-4 right-1/4 justify-between mb-0 py-2 px-5 flex items-center bg-white rounded-full shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] animate-bounce-in">
+        <div className="absolute z-10 w-60 h-12 dt:w-72 dt:h-14 dt:-top-5 -top-3 right-1/4 justify-between mb-0 dt:py-3 px-5 flex items-center bg-white rounded-full shadow-[0_2px_4px_0_rgba(0,0,0,0.25)] animate-bounce-in">
           {REACTION_ICONS.map((icon) => (
             <button
               key={icon.id}
@@ -65,7 +65,7 @@ const ReactionSelector: React.FC = () => {
               <img
                 src={icon.src}
                 alt={icon.label}
-                className="w-8 h-8 object-contain pointer-events-none"
+                className="dt:w-8 dt:h-8 w-7 h-7 object-contain pointer-events-none"
               />
             </button>
           ))}

@@ -15,9 +15,10 @@ const page = () => {
         <AlbumFolder type="CREW" thumbnailUrl="/image/album/thumbnail_ex.jpg" />
       </div>
       <div className="flex justify-between mt-20">
-        <ReactionSelector />
         <ReactionStatus />
+        <ReactionSelector />
       </div>
+      <div className="text-lg">이거 되나요</div>
     </div>
   );
 };
