@@ -16,7 +16,7 @@ const PhotoList = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 mb:grid-cols-3 dt:grid-cols-4 gap-5 p-16 pad:p-5 w-auto items-center">
+    <div className="grid grid-cols-1 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4 gap-5 p-16 pad:p-5 w-auto items-center">
       {[1, 2, 3, 4, 5].map((num) => (
         <PhotoCard
           key={num}
@@ -24,7 +24,6 @@ const PhotoList = () => {
           category="송년회"
           writer={`이윤서 ${num}`}
           imgUrl="/image/album/thumbnail_ex.jpg"
-          // 배열 안에 해당 ID가 있는지 확인하여 선택 여부 결정
           isSelected={selectedPhotoIds.includes(num)}
           onClick={() => handleToggle(num)}
         />
