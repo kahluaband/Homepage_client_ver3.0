@@ -5,6 +5,7 @@ import Header from '@/components/admin/Header';
 import { authInstance } from '@/api/auth/axios';
 import Link from 'next/link';
 import WestIcon from '@mui/icons-material/West';
+import PublishIcon from '@mui/icons-material/Publish';
 
 interface Ticket {
   id: number;
@@ -36,6 +37,29 @@ const MessagePage = () => {
     fetchData();
   }, []);
 
+  const downloadExcel = async () => {
+    try {
+      // API 주소는 서버 상황에 맞게 수정하세요 (예: /admin/tickets/freshman/download)
+      const response = await authInstance.get('/admin/tickets/download', {
+        responseType: 'blob',
+      });
+      const blob = response.data;
+      const fileObjectUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = fileObjectUrl;
+      link.style.display = 'none';
+      link.download = `attendance_list_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(fileObjectUrl);
+    } catch (error) {
+      console.error('엑셀 다운로드 실패:', error);
+      alert('엑셀 파일 생성 중 오류가 발생했습니다.');
+    }
+  };
+
   return (
     <div className="w-full h-full font-pretendard">
       {/* 상단 헤더 및 통계 섹션 */}
@@ -46,20 +70,30 @@ const MessagePage = () => {
         <div className="w-full px-4 pad:px-8 dt:px-[120px] mt-10">
           <div className="flex flex-col pad:flex-row gap-6 pad:gap-10 items-center bg-gray-5 p-6 pad:p-10 rounded-[24px] border border-gray-100 shadow-sm">
             {/* 왼쪽: 텍스트 정보 */}
-            <div className="flex flex-col items-center pad:items-start text-center pad:text-left">
-              <span className="text-[28px] pad:text-[36px] font-bold text-gray-90 caps mb-4">
-                Attendance List
-              </span>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg pad:text-xl font-semibold text-primary-50">
-                    참여 확정자
-                  </span>
-                  <span className="text-xl pad:text-2xl font-bold text-primary-50">
-                    {attendCount}명
-                  </span>
+            <div className="flex flex-row justify-between w-full items-center">
+              <div className="flex flex-col items-center pad:items-start text-center pad:text-left">
+                <span className="text-[28px] pad:text-[36px] font-bold text-gray-90 caps mb-4">
+                  Attendance List
+                </span>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg pad:text-xl font-semibold text-primary-50">
+                      참여 확정자
+                    </span>
+                    <span className="text-xl pad:text-2xl font-bold text-primary-50">
+                      {attendCount}명
+                    </span>
+                  </div>
                 </div>
               </div>
+              <button
+                onClick={downloadExcel}
+                className="flex items-center gap-1 text-gray-50 bg-white px-3 py-2 rounded-xl border border-gray-200 hover:bg-primary-5 transition shadow-sm"
+                title="엑셀 다운로드"
+              >
+                <PublishIcon sx={{ fontSize: 20 }} />
+                <span className="text-sm font-medium">Excel</span>
+              </button>
             </div>
           </div>
         </div>
