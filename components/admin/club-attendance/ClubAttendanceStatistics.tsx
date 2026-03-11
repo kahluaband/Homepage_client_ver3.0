@@ -16,7 +16,7 @@ interface ChartData {
   }[];
 }
 
-const MessageStatistics = () => {
+const ClubAttendanceStatistics = () => {
   const [chartData, setChartData] = useState<ChartData | null>(null);
   // const [totalCount, setTotalCount] = useState<number>(0);
   const [attendCount, setAttendCount] = useState<number>(0);
@@ -85,4 +85,4 @@ const MessageStatistics = () => {
   );
 };
 
-export default MessageStatistics;
+export default ClubAttendanceStatistics;
