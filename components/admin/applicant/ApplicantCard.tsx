@@ -84,25 +84,48 @@ const ApplicantCard = ({
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
   const [
-    { motive, experience_and_reason, play_instrument, readiness },
+    {
+      motive,
+      experience_and_reason,
+      play_instrument,
+      readiness,
+      finish_time,
+      meeting_participation,
+    },
     setDetail,
   ] = useState({
     motive: '',
     experience_and_reason: '',
     play_instrument: '',
     readiness: '',
+    finish_time: '',
+    meeting_participation: true,
   });
 
   const fetchEachApplicant = async () => {
     try {
-      const response = await authInstance.get(`/admin/apply/${id}`);
+      // Promise.all을 사용해 두 API를 동시에 호출합니다.
+      const [detailRes, timeRes] = await Promise.all([
+        authInstance.get(`/admin/apply/${id}`),
+        authInstance.get(`/apply/${id}`), // 월요일 시간 정보 API
+      ]);
+
+      const detailData = detailRes.data.result;
+      const timeData = timeRes.data.result;
+
+      // 상태를 한 번에 업데이트합니다.
       setDetail({
-        motive: response.data.result.motive,
-        experience_and_reason: response.data.result.experience_and_reason,
-        play_instrument: response.data.result.play_instrument,
-        readiness: response.data.result.readiness,
+        motive: detailData.motive,
+        experience_and_reason: detailData.experience_and_reason,
+        play_instrument: detailData.play_instrument,
+        readiness: detailData.readiness,
+        finish_time: timeData.finish_time, // 이제 데이터가 정상 매핑됩니다.
+        meeting_participation: timeData.meeting, // 뒤풀이 참여 여부도 매핑
       });
-    } catch (error) {}
+      // console.log('지원자 상세 정보:', timeData);
+    } catch (error) {
+      console.error('데이터를 가져오는 중 오류 발생:', error);
+    }
   };
 
   const handleClickOpen = (scrollType: DialogProps['scroll']) => async () => {
@@ -331,6 +354,22 @@ const ApplicantCard = ({
                 <div className="w-full p-4 pad:p-6 bg-gray-5 rounded-xl text-base">
                   {readiness}
                 </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="text-base pad:text-lg text-gray-80 font-semibold">
+                  면접일 가능 시간
+                </div>
+                <div className="w-full p-4 pad:p-6 bg-gray-5 rounded-xl text-base">
+                  {finish_time}
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="Text-base pad:text-lg text-gray-80 font-semibold">
+                  면접 뒤풀이
+                </span>
+                <span className="w-full p-4 pad:p-6 bg-gray-5 rounded-xl text-base">
+                  {meeting_participation === true ? '참여' : '불참'}
+                </span>
               </div>
             </section>
           </DialogContent>
