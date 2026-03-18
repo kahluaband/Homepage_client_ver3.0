@@ -1,13 +1,15 @@
-"use client"
+'use client';
 
 import { useState } from 'react';
 
 import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
+import Modal from '@/components/album/Modal';
 
 const Page = () => {
   const [value, setValue] = useState('react');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const options = [
     { label: '전체', value: 'all' },
@@ -20,16 +22,33 @@ const Page = () => {
   return (
     <div className="flex flex-col pt-40 px-2 gap-12 mb-12">
       <Dropdown options={options} value={value} onChange={setValue} />
-      <Button label="저장하기" variant="저장하기" />
-      <Button label="저장" variant="저장" />
-      <Button label="취소" variant="취소" />
-      <Button label="선택하기" variant="선택하기" />
-      <Button label="사진 올리기" variant="사진 올리기_kahlua" />
-      <Button label="사진 올리기" variant="사진 올리기_crew" />
-      <p className="title-lg font-semibold">프리텐다드</p>
-      <p className="title-lg font-medium">프리텐다드</p>
-      <p className="title-lg font-normal">프리텐다드</p>
+      <Button label="저장하기" variant="primary" />
+      <Button label="저장" variant="secondary" />
+      <Button label="선택하기" variant="tertiary" />
+      <Button label="취소" variant="cancel" />
+      <Button label="삭제" variant="delete" />
+      <Button label="사진 올리기" variant="uploadkahlua" />
+      <Button label="사진 올리기" variant="uploadcrew" />
       <Category label="전체" />
+      <Button
+        label="모달 열기"
+        variant="default"
+        onClick={() => setIsModalOpen(true)}
+      />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <p>정말 사진을 삭제하시겠습니까?</p>
+        <p>완료 후에는 이전 상태로 되돌릴 수 없습니다.</p>
+        <Button
+          label="취소"
+          variant="cancel"
+          onClick={() => setIsModalOpen(false)}
+        />
+        <Button
+          label="삭제"
+          variant="secondary"
+          onClick={() => setIsModalOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };
