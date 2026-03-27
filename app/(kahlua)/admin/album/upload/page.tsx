@@ -17,7 +17,7 @@ const CATEGORY_OPTIONS = [
 ];
 
 const Page = () => {
-  const [selected, setSelected] = useState(CATEGORY_OPTIONS[0].value);
+  const [selected, setSelected] = useState('');
 
   return (
     <div className="w-[360px] font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[32px] mb:gap-[64px]">
@@ -29,11 +29,17 @@ const Page = () => {
               options={CATEGORY_OPTIONS}
               value={selected}
               onChange={setSelected}
+              placeholder="카테고리"
             />
           </div>
           <div className="hidden pad:flex flex-row gap-3">
             {CATEGORY_OPTIONS.map((option) => (
-              <Category key={option.value} label={option.label} />
+              <Category
+                key={option.value}
+                label={option.label}
+                selected={selected === option.value}
+                onClick={() => setSelected(option.value)}
+              />
             ))}
           </div>
           <Button label="업로드 하기" variant="uploadkahlua" />
