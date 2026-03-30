@@ -1,14 +1,18 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { ChangeEvent, DragEvent } from 'react';
 
+import { authInstance } from '@/api/auth/axios';
+import { getPresignedUrl } from '@/api/s3/s3';
 import { getUserInfo } from '@/api/user/user';
 import AlbumBanner from '@/components/album/AlbumBanner';
 import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
+import Modal from '@/components/album/Modal';
 import PhotoList from '@/components/album/PhotoList';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
 
@@ -33,9 +37,12 @@ const Page = () => {
   const [selected, setSelected] = useState('');
   const [photos, setPhotos] = useState<UploadPhoto[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [userName, setUserName] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const createdUrlsRef = useRef<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     return () => {
@@ -119,9 +126,68 @@ const Page = () => {
     setIsDragging(false);
   };
 
-  const handleUpload = async () => {
-    if (photos.length === 0) return;
-    // API 연결
+  const uploadPhotoFile = async (photo: UploadPhoto, index: number) => {
+    const extension = photo.file.name.includes('.')
+      ? photo.file.name.slice(photo.file.name.lastIndexOf('.'))
+      : '';
+    const imageName = `album-${Date.now()}-${index}${extension}`;
+    const { presignedUrl, imageUrl } = await getPresignedUrl(imageName);
+
+    const uploadResponse = await fetch(presignedUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': photo.file.type || 'application/octet-stream',
+      },
+      body: photo.file,
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error(`이미지 업로드 실패: ${photo.file.name}`);
+    }
+
+    return {
+      category: photo.category,
+      writer: photo.writer,
+      imageUrl,
+    };
+  };
+
+  const handleUpload = () => {
+    if (photos.length === 0 || isUploading) return;
+    setIsUploadModalOpen(true);
+  };
+
+  const closeUploadModal = () => {
+    if (isUploading) return;
+    setIsUploadModalOpen(false);
+  };
+
+  const confirmUpload = async () => {
+    if (photos.length === 0 || isUploading) return;
+
+    try {
+      setIsUploading(true);
+
+      const uploadedPhotos = await Promise.all(
+        photos.map((photo, index) => uploadPhotoFile(photo, index))
+      );
+
+      await Promise.all(
+        uploadedPhotos.map((photo) => authInstance.post('/album/create', photo))
+      );
+
+      createdUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+      createdUrlsRef.current = [];
+      setPhotos([]);
+      setIsUploadModalOpen(false);
+      alert('앨범 업로드가 완료되었습니다.');
+      router.push('/admin/album');
+    } catch (error) {
+      console.error('앨범 업로드 실패:', error);
+      alert('앨범 업로드에 실패했습니다.');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -149,12 +215,14 @@ const Page = () => {
           </div>
           <Button
             type="button"
-            label="업로드 하기"
+            label={isUploading ? '업로드 중...' : '업로드 하기'}
             variant="uploadkahlua"
             onClick={handleUpload}
-            disabled={photos.length === 0}
+            disabled={photos.length === 0 || isUploading}
             className={
-              photos.length === 0 ? 'cursor-not-allowed opacity-50' : ''
+              photos.length === 0 || isUploading
+                ? 'cursor-not-allowed opacity-50'
+                : ''
             }
           />
         </div>
@@ -219,6 +287,28 @@ const Page = () => {
           )}
         </section>
       </div>
+      <Modal isOpen={isUploadModalOpen} onClose={closeUploadModal}>
+        <h2>사진을 게시합니다.</h2>
+        <p>
+          게시한 사진은
+          <br />
+          추후 개별 삭제할 수 있습니다.
+        </p>
+        <Button
+          type="button"
+          label="취소"
+          variant="cancel"
+          onClick={closeUploadModal}
+          disabled={isUploading}
+        />
+        <Button
+          type="button"
+          label={isUploading ? '업로드 중...' : '게시'}
+          variant="primary"
+          onClick={confirmUpload}
+          disabled={isUploading}
+        />
+      </Modal>
     </div>
   );
 };
