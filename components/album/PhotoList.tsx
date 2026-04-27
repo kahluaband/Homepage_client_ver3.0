@@ -11,15 +11,15 @@ type PhotoItem = {
 
 interface PhotoListProps {
   photos: PhotoItem[];
-  selectedPhotoIds: number[];
-  onToggle: (id: number) => void;
+  selectedPhotoIds?: number[];
+  onToggle?: (id: number) => void;
   isSelectMode?: boolean;
 }
 
 const PhotoList = ({
   photos,
-  selectedPhotoIds,
-  onToggle,
+  selectedPhotoIds = [],
+  onToggle = () => {},
   isSelectMode = false,
 }: PhotoListProps) => {
   return (
