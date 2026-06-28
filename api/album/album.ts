@@ -31,6 +31,16 @@ export const getAlbumPhotos = async (
   return res.data.result;
 };
 
+// 사진 삭제
+export const deleteAlbumPhotos = async (
+  albumId: number,
+  photoIds: number[]
+): Promise<void> => {
+  await authInstance.delete(`/albums/${albumId}/photos`, {
+    data: { photoIds },
+  });
+};
+
 // 사진 업로드
 export const uploadPhotosToAlbum = async (
   albumId: number,

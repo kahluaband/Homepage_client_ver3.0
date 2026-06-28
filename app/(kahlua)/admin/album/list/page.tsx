@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { getAlbumPhotos } from '@/api/album/album';
+import { deleteAlbumPhotos, getAlbumPhotos } from '@/api/album/album';
 import Banner from '@/components/album/Banner';
 import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
@@ -122,6 +122,22 @@ const AlbumListPage = () => {
     });
   };
 
+  const handleDelete = async () => {
+    if (selectedPhotoIds.length === 0) return;
+    if (!confirm(`선택한 ${selectedPhotoIds.length}장을 삭제하시겠습니까?`))
+      return;
+    try {
+      await deleteAlbumPhotos(ALBUM_ID, selectedPhotoIds);
+      setPhotos((prev) =>
+        prev.filter((p) => !selectedPhotoIds.includes(p.photoId))
+      );
+      setSelectedPhotoIds([]);
+      setIsSelectMode(false);
+    } catch (error) {
+      console.error('사진 삭제에 실패했습니다.', error);
+    }
+  };
+
   const photoItems = photos.map(toPhotoItem);
 
   return (
@@ -144,7 +160,12 @@ const AlbumListPage = () => {
                 onChange={(v) => setSelectedCategory(v as CategoryValue)}
               />
               <div className="flex items-center gap-2">
-                {isSelectMode && <Icon type="download" onClick={handleSave} />}
+                {isSelectMode && (
+                  <>
+                    <Icon type="delete" onClick={handleDelete} />
+                    <Icon type="download" onClick={handleSave} />
+                  </>
+                )}
                 <Button
                   label={isSelectMode ? '전체 선택' : '선택하기'}
                   variant="tertiary"
@@ -171,7 +192,12 @@ const AlbumListPage = () => {
                 ))}
               </div>
               <div className="flex flex-row items-center gap-3">
-                {isSelectMode && <Icon type="download" onClick={handleSave} />}
+                {isSelectMode && (
+                  <>
+                    <Icon type="delete" onClick={handleDelete} />
+                    <Icon type="download" onClick={handleSave} />
+                  </>
+                )}
                 <Button
                   label={isSelectMode ? '전체 선택' : '선택하기'}
                   variant="tertiary"
