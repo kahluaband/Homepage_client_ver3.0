@@ -167,9 +167,8 @@ const Page = () => {
       );
 
       const photoPayload = photos.map((photo, index) => {
-        const { presignedUrl, s3Key } = urlList[index];
+        const { s3Key } = urlList[index];
         return {
-          imageUrl: presignedUrl.split('?')[0],
           s3Key,
           category: photo.category,
           uploader: photo.writer,
