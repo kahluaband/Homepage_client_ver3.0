@@ -43,6 +43,19 @@ export const getPhotoDownloadUrl = async (
   return res.data.result;
 };
 
+// 사진 복수 다운로드 (zip)
+export const batchDownloadPhotos = async (
+  albumId: number,
+  photoIds: number[]
+): Promise<Blob> => {
+  const res = await authInstance.post(
+    `/albums/${albumId}/photos/download/batch`,
+    { photoIds },
+    { responseType: 'blob' }
+  );
+  return res.data;
+};
+
 // 사진 삭제
 export const deleteAlbumPhotos = async (
   albumId: number,

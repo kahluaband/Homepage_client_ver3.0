@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
+  batchDownloadPhotos,
   deleteAlbumPhotos,
   getAlbumPhotos,
   getPhotoDownloadUrl,
@@ -134,14 +135,17 @@ const AlbumListPage = () => {
       return;
     }
 
-    selectedPhotoIds.forEach((id) => {
-      const photo = photos.find((p) => p.photoId === id);
-      if (!photo) return;
+    try {
+      const blob = await batchDownloadPhotos(ALBUM_ID, selectedPhotoIds);
+      const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = photo.thumbnailUrl;
-      a.download = `photo_${id}`;
+      a.href = url;
+      a.download = 'kahlua_photos.zip';
       a.click();
-    });
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('일괄 다운로드에 실패했습니다.', error);
+    }
   };
 
   const handleDelete = async () => {
