@@ -3,6 +3,7 @@ import type {
   AlbumCategory,
   AlbumListCategory,
   AlbumPhotosResponse,
+  PhotoDownloadResponse,
   PhotoUploadResponse,
   PresignedUrlResponse,
 } from '@/types/album';
@@ -27,6 +28,17 @@ export const getAlbumPhotos = async (
   const res = await authInstance.get<AlbumPhotosResponse>(
     `/albums/${albumId}/photos`,
     { params }
+  );
+  return res.data.result;
+};
+
+// 사진 단건 다운로드 presigned URL 발급
+export const getPhotoDownloadUrl = async (
+  albumId: number,
+  photoId: number
+): Promise<PhotoDownloadResponse['result']> => {
+  const res = await authInstance.get<PhotoDownloadResponse>(
+    `/albums/${albumId}/photos/${photoId}/download`
   );
   return res.data.result;
 };

@@ -72,6 +72,17 @@ export type UploadedPhoto = {
   createdAt: string;
 };
 
+export type PhotoDownloadResponse = {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: {
+    photoId: number;
+    fileName: string;
+    downloadUrl: string;
+  };
+};
+
 export type PhotoUploadResponse = {
   isSuccess: boolean;
   code: string;

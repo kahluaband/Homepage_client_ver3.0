@@ -2,7 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { deleteAlbumPhotos, getAlbumPhotos } from '@/api/album/album';
+import {
+  deleteAlbumPhotos,
+  getAlbumPhotos,
+  getPhotoDownloadUrl,
+} from '@/api/album/album';
 import Banner from '@/components/album/Banner';
 import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
@@ -111,7 +115,25 @@ const AlbumListPage = () => {
     setSelectedPhotoIds([]);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (selectedPhotoIds.length === 0) return;
+
+    if (selectedPhotoIds.length === 1) {
+      try {
+        const { downloadUrl, fileName } = await getPhotoDownloadUrl(
+          ALBUM_ID,
+          selectedPhotoIds[0]
+        );
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = fileName;
+        a.click();
+      } catch (error) {
+        console.error('다운로드 URL 발급에 실패했습니다.', error);
+      }
+      return;
+    }
+
     selectedPhotoIds.forEach((id) => {
       const photo = photos.find((p) => p.photoId === id);
       if (!photo) return;
