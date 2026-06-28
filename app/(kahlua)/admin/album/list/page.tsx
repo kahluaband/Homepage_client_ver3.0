@@ -13,6 +13,7 @@ import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
 import Icon from '@/components/album/Icons';
+import Modal from '@/components/album/Modal';
 import PhotoList from '@/components/album/PhotoList';
 import type { AlbumListCategory, AlbumPhoto } from '@/types/album';
 
@@ -53,6 +54,8 @@ const AlbumListPage = () => {
   const [cursor, setCursor] = useState<number | null>(null);
   const [hasNext, setHasNext] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
 
   const fetchPhotos = useCallback(
@@ -148,10 +151,13 @@ const AlbumListPage = () => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
     if (selectedPhotoIds.length === 0) return;
-    if (!confirm(`선택한 ${selectedPhotoIds.length}장을 삭제하시겠습니까?`))
-      return;
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    setIsDeleting(true);
     try {
       await deleteAlbumPhotos(ALBUM_ID, selectedPhotoIds);
       setPhotos((prev) =>
@@ -159,8 +165,11 @@ const AlbumListPage = () => {
       );
       setSelectedPhotoIds([]);
       setIsSelectMode(false);
+      setIsDeleteModalOpen(false);
     } catch (error) {
       console.error('사진 삭제에 실패했습니다.', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -188,7 +197,7 @@ const AlbumListPage = () => {
               <div className="flex items-center gap-2">
                 {isSelectMode && (
                   <>
-                    <Icon type="delete" onClick={handleDelete} />
+                    <Icon type="delete" onClick={handleDeleteClick} />
                     <Icon type="download" onClick={handleSave} />
                   </>
                 )}
@@ -220,7 +229,7 @@ const AlbumListPage = () => {
               <div className="flex flex-row items-center gap-3">
                 {isSelectMode && (
                   <>
-                    <Icon type="delete" onClick={handleDelete} />
+                    <Icon type="delete" onClick={handleDeleteClick} />
                     <Icon type="download" onClick={handleSave} />
                   </>
                 )}
@@ -251,6 +260,27 @@ const AlbumListPage = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => !isDeleting && setIsDeleteModalOpen(false)}
+        closeOnOverlayClick={!isDeleting}
+      >
+        <p>사진을 삭제합니다.</p>
+        <p>선택한 {selectedPhotoIds.length}장이 삭제됩니다.</p>
+        <Button
+          label="취소"
+          variant="cancel"
+          onClick={() => setIsDeleteModalOpen(false)}
+          disabled={isDeleting}
+        />
+        <Button
+          label={isDeleting ? '삭제 중...' : '삭제'}
+          variant="delete"
+          onClick={confirmDelete}
+          disabled={isDeleting}
+        />
+      </Modal>
     </div>
   );
 };
