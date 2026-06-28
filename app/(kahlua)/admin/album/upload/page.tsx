@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import type { ChangeEvent, DragEvent } from 'react';
 
 import { getPresignedUrls, uploadPhotosToAlbum } from '@/api/album/album';
@@ -312,4 +312,10 @@ const Page = () => {
   );
 };
 
-export default Page;
+const UploadPage = () => (
+  <Suspense>
+    <Page />
+  </Suspense>
+);
+
+export default UploadPage;
