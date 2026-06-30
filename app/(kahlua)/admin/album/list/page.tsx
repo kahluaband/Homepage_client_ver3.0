@@ -32,21 +32,26 @@ const CATEGORIES: { label: string; value: CategoryValue }[] = [
 
 const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
 
-const CATEGORY_KO: Record<string, string> = {
-  FOUNDATION_FESTIVAL: '창립제',
-  YEAR_END_PARTY: '송년회',
-  PERFORMANCE: '공연',
-  ETC: '기타',
-};
+// const CATEGORY_KO: Record<string, string> = {
+//   FOUNDATION_FESTIVAL: '창립제',
+//   YEAR_END_PARTY: '송년회',
+//   PERFORMANCE: '공연',
+//   ETC: '기타',
+// };
 
-const toPhotoItem = (photo: AlbumPhoto) => ({
-  id: photo.photoId,
-  imgUrl: fixUrl(photo.thumbnailUrl),
-  category: CATEGORY_KO[photo.category] ?? photo.category,
-  writer: photo.uploaderName,
-  date: photo.createdAt,
-  reactions: photo.reactions || [],
-});
+const dropdownOptions = [
+  ...CATEGORIES,
+  { label: '반응한 사진', value: 'MY_REACTION' },
+];
+
+// const toPhotoItem = (photo: AlbumPhoto) => ({
+//   id: photo.photoId,
+//   imgUrl: fixUrl(photo.thumbnailUrl),
+//   category: CATEGORY_KO[photo.category] ?? photo.category,
+//   writer: photo.uploaderName,
+//   date: photo.createdAt,
+//   reactions: photo.reactions || [],
+// });
 
 const AlbumListPage = () => {
   type ViewMode = 'ALL' | 'MY_REACTION';
@@ -205,16 +210,6 @@ const AlbumListPage = () => {
     }
   };
 
-  const photoItems = photos.map(toPhotoItem);
-
-  // // 필터링 로직
-  // const displayPhotos =
-  //   viewMode === 'MY_REACTION'
-  //     ? photoItems.filter((p) => p.reactions.some((r) => r.clicked))
-  //     : photoItems.filter(
-  //         (p) => selectedCategory === '전체' || p.category === selectedCategory
-  //       );
-
   return (
     <div className="flex" onClick={handleReset}>
       <div className="flex flex-col justify-center dt:w-[1200px] pad:w-[786px] ph:w-[500px] mx-auto">
@@ -227,12 +222,18 @@ const AlbumListPage = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <Dropdown
-                options={CATEGORIES.map(({ label, value }) => ({
-                  label,
-                  value,
-                }))}
-                value={selectedCategory}
-                onChange={(v) => setSelectedCategory(v as CategoryValue)}
+                options={dropdownOptions}
+                value={
+                  viewMode === 'MY_REACTION' ? 'MY_REACTION' : selectedCategory
+                }
+                onChange={(v) => {
+                  if (v === 'MY_REACTION') {
+                    setViewMode('MY_REACTION');
+                  } else {
+                    setViewMode('ALL');
+                    setSelectedCategory(v as CategoryValue);
+                  }
+                }}
               />
               <div className="flex items-center gap-2">
                 {isSelectMode && (
