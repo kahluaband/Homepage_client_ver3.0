@@ -19,14 +19,17 @@ export type CategoryType = 'default' | 'kahlua' | 'crew';
 
 export type EmojiType = 'LAUGH' | 'ANGRY' | 'SAD' | 'HEART' | 'CONFUSED';
 
-export type AlbumPhoto = {
+export interface PhotoBase {
   photoId: number;
   thumbnailUrl: string;
-  uploaderName: string;
   category: string;
+  uploaderName: string;
+}
+
+export interface AlbumPhoto extends PhotoBase {
   createdAt: string;
   reactions?: ReactionData[];
-};
+}
 
 export type AlbumPhotosResponse = {
   isSuccess: boolean;

@@ -18,7 +18,7 @@ interface PhotoProps {
 const PhotoCard = ({
   category,
   writer,
-  imgUrl,
+  imgUrl = '',
   isSelected = false,
   isSelectMode = false,
   onSelect,
