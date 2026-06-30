@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import React from 'react';
+import { CATEGORY_LABEL } from '@/types/album';
 
 interface PhotoProps {
   id: number;
@@ -27,6 +28,9 @@ const PhotoCard = ({
     imgUrl.startsWith('blob:') ||
     imgUrl.startsWith('data:') ||
     imgUrl.startsWith('https://');
+
+  const displayCategory =
+    CATEGORY_LABEL[category as keyof typeof CATEGORY_LABEL] || category;
 
   // 모드에 따라 알맞은 클릭 이벤트를 실행하는 핸들러
   const handleClick = () => {
@@ -78,7 +82,7 @@ const PhotoCard = ({
           {/* 오른쪽 상단 카테고리 뱃지 */}
           <div className="flex justify-end">
             <span className="bg-gray-0/70 border-2 border-gray-0 px-3 rounded-full text-xs font-semibold text-black">
-              {category}
+              {displayCategory}
             </span>
           </div>
         </div>

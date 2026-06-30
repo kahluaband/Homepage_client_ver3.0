@@ -4,14 +4,18 @@ export type AlbumListCategory =
   | 'FOUNDATION_FESTIVAL'
   | 'YEAR_END_PARTY'
   | 'PERFORMANCE'
-  | 'ETC';
+  | 'ETC'
+  | 'REACT';
 
 export const CATEGORY_LABEL: Record<AlbumListCategory, string> = {
   FOUNDATION_FESTIVAL: '창립제',
   YEAR_END_PARTY: '송년회',
   PERFORMANCE: '공연',
   ETC: '기타',
+  REACT: '반응한 사진',
 };
+
+export type CategoryType = 'default' | 'kahlua' | 'crew';
 
 export type EmojiType = 'LAUGH' | 'ANGRY' | 'SAD' | 'HEART' | 'CONFUSED';
 
@@ -21,6 +25,7 @@ export type AlbumPhoto = {
   uploaderName: string;
   category: string;
   createdAt: string;
+  reactions?: ReactionData[];
 };
 
 export type AlbumPhotosResponse = {

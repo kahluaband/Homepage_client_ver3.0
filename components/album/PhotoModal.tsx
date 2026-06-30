@@ -5,26 +5,16 @@ import Button from './Button';
 import Icons from './Icons';
 import Image from 'next/image';
 import ReactionWidget from './ReactionWidget';
-import { ReactionData } from '@/types/album';
-
-type PhotoItem = {
-  id: number;
-  category: string;
-  writer: string;
-  imgUrl: string;
-  date: string;
-  reactions: ReactionData[];
-};
+import { ReactionData, AlbumPhoto } from '@/types/album';
 
 interface PhotoModalProps {
   albumId: number;
   isOpen: boolean;
   onClose: () => void;
-  photo: PhotoItem | null;
+  photo: AlbumPhoto | null;
 }
 
 const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
-  // 스크롤 방지 및 ESC로 닫기 로직
   useEffect(() => {
     if (!isOpen) return;
     const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -57,8 +47,8 @@ const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
           </div>
 
           <Image
-            src={photo.imgUrl}
-            alt={photo.writer}
+            src={photo.thumbnailUrl}
+            alt={photo.uploaderName}
             className="h-full w-full object-contain"
             fill
           />
@@ -71,16 +61,16 @@ const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
             {/* 작성자 & 작성일 */}
             <div className="flex flex-col gap-1">
               <span className="text-[18px] font-bold text-black">
-                {photo.writer}
+                {photo.uploaderName}
               </span>
               <span className="text-[14px] font-medium text-gray-400">
-                {photo.date}
+                {photo.createdAt}
               </span>
             </div>
             <div className="relative z-10">
               <ReactionWidget
                 albumId={albumId}
-                photoId={photo.id}
+                photoId={photo.photoId}
                 initialReactions={photo.reactions || []}
               />
             </div>{' '}

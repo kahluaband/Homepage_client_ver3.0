@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import PhotoCard from './PhotoCard';
 import PhotoModal from './PhotoModal';
 import { getDetailedPhotoInfo } from '@/api/album/album';
-import { PhotoItem } from '@/types/album';
+import { AlbumPhoto } from '@/types/album';
 
 interface PhotoListProps {
   albumId: number;
-  photos: PhotoItem[];
+  photos: AlbumPhoto[];
   selectedPhotoIds?: number[];
   onToggle?: (id: number) => void;
   isSelectMode?: boolean;
@@ -22,21 +22,21 @@ const PhotoList = ({
   isSelectMode = false,
 }: PhotoListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState<PhotoItem | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<AlbumPhoto | null>(null);
 
-  const handlePhotoClick = async (photo: PhotoItem) => {
+  const handlePhotoClick = async (photo: AlbumPhoto) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
 
     try {
-      const detailData = await getDetailedPhotoInfo(albumId, photo.id);
+      const detailData = await getDetailedPhotoInfo(albumId, photo.photoId);
 
       setSelectedPhoto({
         ...photo,
-        imgUrl: detailData.originalUrl,
-        writer: detailData.uploader.name,
+        thumbnailUrl: detailData.originalUrl,
+        uploaderName: detailData.uploader.name,
         reactions: detailData.reactions,
-        date: detailData.createdAt,
+        createdAt: detailData.createdAt,
       });
       setIsModalOpen(true);
     } catch (error) {
@@ -54,14 +54,14 @@ const PhotoList = ({
       <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
         {photos.map((photo) => (
           <PhotoCard
-            key={photo.id}
-            id={photo.id}
+            key={photo.photoId}
+            id={photo.photoId}
             category={photo.category}
-            writer={photo.writer}
-            imgUrl={photo.imgUrl}
-            isSelected={selectedPhotoIds.includes(photo.id)}
+            writer={photo.uploaderName}
+            imgUrl={photo.thumbnailUrl}
+            isSelected={selectedPhotoIds.includes(photo.photoId)}
             isSelectMode={isSelectMode}
-            onSelect={() => onToggle(photo.id)}
+            onSelect={() => onToggle(photo.photoId)}
             onClick={() => handlePhotoClick(photo)}
           />
         ))}

@@ -107,3 +107,14 @@ export const togglePhotoReaction = async (
 
   return res.data.result;
 };
+
+// 반응한 사진
+export const getMyReactionPhotos = async (
+  albumId: number,
+  params: { cursor?: number; size: number }
+) => {
+  const res = await authInstance.get(`/albums/${albumId}/photos/my-reactions`, {
+    params,
+  });
+  return res.data.result;
+};
