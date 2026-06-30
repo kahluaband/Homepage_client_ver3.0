@@ -1,77 +1,96 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactionBadge from './ReactionBadge';
 import ReactionSelector from './ReactionSelector';
+import { togglePhotoReaction } from '@/api/album/album';
+import { ReactionData, EmojiType } from '@/types/album';
 
-const ReactionWidget = () => {
-  // 전체 리액션 상태 관리
-  const [reactions, setReactions] = useState([
-    { id: 'lovable', count: 0, isSelected: false },
-    { id: 'baffled', count: 0, isSelected: false },
-    { id: 'funny', count: 0, isSelected: false },
-  ]);
+interface ReactionWidgetProps {
+  albumId: number;
+  photoId: number;
+  initialReactions: ReactionData[];
+}
 
-  // 클릭 시 실행될 핵심 토글 로직
-  const handleToggle = (id: string) => {
-    setReactions((prev) => {
-      const existingReaction = prev.find((r) => r.id === id);
+const ReactionWidget = ({
+  albumId,
+  photoId,
+  initialReactions,
+}: ReactionWidgetProps) => {
+  const [reactions, setReactions] = useState<ReactionData[]>(
+    initialReactions || []
+  );
 
-      let updatedReactions = prev.map((reac) => {
-        if (reac.id === id) {
-          const nextSelected = !reac.isSelected;
-          return {
-            ...reac,
-            isSelected: nextSelected,
-            count: nextSelected ? reac.count + 1 : Math.max(0, reac.count - 1),
+  useEffect(() => {
+    setReactions(initialReactions || []);
+  }, [initialReactions]);
+
+  const handleToggle = async (emojiType: EmojiType) => {
+    try {
+      //   const result = await togglePhotoReaction(albumId, photoId, emojiType);
+      const result = await togglePhotoReaction(albumId, photoId, emojiType);
+
+      setReactions((prev) => {
+        const updated = [...prev];
+
+        const targetIndex = updated.findIndex(
+          (r) => r.emojiType === result.emojiType
+        );
+
+        if (targetIndex !== -1) {
+          updated[targetIndex] = {
+            ...updated[targetIndex],
+            clicked: result.isClicked,
+            count: result.currentCount,
           };
+        } else {
+          updated.push({
+            emojiType: result.emojiType as EmojiType,
+            clicked: result.isClicked,
+            count: result.currentCount,
+          });
         }
-        if (reac.isSelected) {
-          return {
-            ...reac,
-            isSelected: false,
-            count: Math.max(0, reac.count - 1),
-          };
+
+        if (result.previousEmojiType && result.previousCount !== undefined) {
+          const prevTargetIndex = updated.findIndex(
+            (r) => r.emojiType === result.previousEmojiType
+          );
+
+          if (prevTargetIndex !== -1) {
+            updated[prevTargetIndex] = {
+              ...updated[prevTargetIndex],
+              clicked: false,
+              count: result.previousCount,
+            };
+          }
         }
-        return reac;
+
+        return updated;
       });
-
-      // 뱃지 목록에 없던 걸 골랐을 때 추가
-      if (!existingReaction) {
-        updatedReactions = [
-          ...updatedReactions,
-          { id, count: 1, isSelected: true },
-        ];
-      }
-
-      return updatedReactions;
-    });
+    } catch (error) {
+      console.error('이모지 추가에 실패했습니다.', error);
+    }
   };
 
-  // 현재 유저가 '선택한(isSelected: true)' 리액션의 ID 찾기
-  const selectedReactionId = reactions.find((r) => r.isSelected)?.id || null;
+  const selectedReaction = reactions.find((r) => r.clicked);
 
   return (
     <div className="flex items-center gap-3">
-      {/* 1. 가져다 쓴 ReactionBadge */}
       <div className="flex flex-wrap gap-2">
         {reactions
           .filter((reac) => reac.count > 0)
           .map((reac) => (
             <ReactionBadge
-              key={reac.id}
-              type={reac.id}
-              count={reac.count}
-              isSelected={reac.isSelected}
-              onClick={() => handleToggle(reac.id)}
+              key={reac.emojiType}
+              reactions={reac}
+              onClick={() => handleToggle(reac.emojiType)}
             />
           ))}
       </div>
 
-      {/* 2. 가져다 쓴 ReactionSelector */}
       <ReactionSelector
-        selectedId={selectedReactionId}
-        onSelect={handleToggle}
+        selectedId={selectedReaction?.emojiType || null}
+        onSelect={(id) => handleToggle(id as EmojiType)}
       />
     </div>
   );

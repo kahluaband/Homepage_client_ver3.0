@@ -13,6 +13,8 @@ export const CATEGORY_LABEL: Record<AlbumListCategory, string> = {
   ETC: '기타',
 };
 
+export type EmojiType = 'LAUGH' | 'ANGRY' | 'SAD' | 'HEART' | 'CONFUSED';
+
 export type AlbumPhoto = {
   photoId: number;
   thumbnailUrl: string;
@@ -93,9 +95,9 @@ export type PhotoUploadResponse = {
 };
 
 export type ReactionData = {
-  id: string;
+  emojiType: EmojiType;
   count: number;
-  isSelected: boolean;
+  clicked: boolean;
 };
 
 interface UploaderInfo {
@@ -112,3 +114,29 @@ export interface PhotoDetailResult {
   createdAt: string;
   reactions: ReactionData[];
 }
+
+// 리액션 토글
+export interface ReactionToggleResult {
+  photoId: number;
+  emojiType: string;
+  currentCount: number;
+  isClicked: boolean;
+  previousEmojiType?: string | null;
+  previousCount?: number;
+}
+
+export interface ReactionToggleResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: ReactionToggleResult;
+}
+
+export type PhotoItem = {
+  id: number;
+  category: string;
+  writer: string;
+  imgUrl: string;
+  date: string;
+  reactions: ReactionData[];
+};

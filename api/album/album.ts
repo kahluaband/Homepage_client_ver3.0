@@ -7,6 +7,8 @@ import type {
   PhotoUploadResponse,
   PhotoDetailResult,
   PresignedUrlResponse,
+  ReactionToggleResponse,
+  ReactionToggleResult,
 } from '@/types/album';
 
 // Presigned URL 발급
@@ -89,5 +91,19 @@ export const getDetailedPhotoInfo = async (
   photoId: number
 ): Promise<PhotoDetailResult> => {
   const res = await authInstance.get(`/albums/${albumId}/photos/${photoId}`);
+  return res.data.result;
+};
+
+// 사진 이모지 반응 추가/변경/취소
+export const togglePhotoReaction = async (
+  albumId: number,
+  photoId: number,
+  emojiType: string
+): Promise<ReactionToggleResult> => {
+  const res = await authInstance.post<ReactionToggleResponse>(
+    `/albums/${albumId}/photos/${photoId}/reactions`,
+    { emojiType }
+  );
+
   return res.data.result;
 };

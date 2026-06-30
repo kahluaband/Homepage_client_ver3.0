@@ -5,6 +5,7 @@ import Button from './Button';
 import Icons from './Icons';
 import Image from 'next/image';
 import ReactionWidget from './ReactionWidget';
+import { ReactionData } from '@/types/album';
 
 type PhotoItem = {
   id: number;
@@ -12,15 +13,17 @@ type PhotoItem = {
   writer: string;
   imgUrl: string;
   date: string;
+  reactions: ReactionData[];
 };
 
 interface PhotoModalProps {
+  albumId: number;
   isOpen: boolean;
   onClose: () => void;
   photo: PhotoItem | null;
 }
 
-const PhotoModal = ({ isOpen, onClose, photo }: PhotoModalProps) => {
+const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
   // 스크롤 방지 및 ESC로 닫기 로직
   useEffect(() => {
     if (!isOpen) return;
@@ -75,8 +78,12 @@ const PhotoModal = ({ isOpen, onClose, photo }: PhotoModalProps) => {
               </span>
             </div>
             <div className="relative z-10">
-              <ReactionWidget />
-            </div>
+              <ReactionWidget
+                albumId={albumId}
+                photoId={photo.id}
+                initialReactions={photo.reactions || []}
+              />
+            </div>{' '}
           </div>
 
           {/* 저장하기 버튼 영역 */}

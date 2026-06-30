@@ -4,16 +4,7 @@ import React, { useState } from 'react';
 import PhotoCard from './PhotoCard';
 import PhotoModal from './PhotoModal';
 import { getDetailedPhotoInfo } from '@/api/album/album';
-import { ReactionData } from '@/types/album';
-
-type PhotoItem = {
-  id: number;
-  category: string;
-  writer: string;
-  imgUrl: string;
-  date: string;
-  reactions?: ReactionData[]; // ✨ any 대신 정확한 타입 지정!
-};
+import { PhotoItem } from '@/types/album';
 
 interface PhotoListProps {
   albumId: number;
@@ -47,6 +38,7 @@ const PhotoList = ({
         reactions: detailData.reactions,
         date: detailData.createdAt,
       });
+      setIsModalOpen(true);
     } catch (error) {
       console.error('상세 정보를 불러오지 못했습니다.', error);
     }
@@ -76,6 +68,7 @@ const PhotoList = ({
       </div>
 
       <PhotoModal
+        albumId={albumId}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         photo={selectedPhoto}
