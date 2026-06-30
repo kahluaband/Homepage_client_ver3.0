@@ -37,7 +37,7 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
           />
         )}
       </div>
-      <span className="text-base font-bold dt:text-lg text-sm text-black flex justify-end items-end">
+      <span className="font-bold dt:text-lg text-sm text-black flex justify-end items-end">
         {reactions.count}
       </span>
     </div>

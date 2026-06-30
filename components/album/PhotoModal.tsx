@@ -6,6 +6,8 @@ import Icons from './Icons';
 import Image from 'next/image';
 import ReactionWidget from './ReactionWidget';
 import { ReactionData, AlbumPhoto } from '@/types/album';
+import { getPhotoDownloadUrl } from '@/api/album/album';
+import { formatDateTimeMinute } from '@/utils/dateUtils';
 
 interface PhotoModalProps {
   albumId: number;
@@ -32,6 +34,29 @@ const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
   }, [isOpen, onClose]);
 
   if (!isOpen || !photo) return null;
+
+  const handleDownload = async () => {
+    if (!photo) return;
+
+    try {
+      const { downloadUrl, fileName } = await getPhotoDownloadUrl(
+        albumId,
+        photo.photoId
+      );
+
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = fileName;
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('사진 다운로드에 실패했습니다.', error);
+      alert('다운로드 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <div
@@ -64,7 +89,7 @@ const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
                 {photo.uploaderName}
               </span>
               <span className="text-[14px] font-medium text-gray-400">
-                {photo.createdAt}
+                {formatDateTimeMinute(photo.createdAt)}
               </span>
             </div>
             <div className="relative z-10">
@@ -78,7 +103,11 @@ const PhotoModal = ({ isOpen, onClose, photo, albumId }: PhotoModalProps) => {
 
           {/* 저장하기 버튼 영역 */}
           <div className="flex justify-center">
-            <Button label="저장하기" variant="primary" />
+            <Button
+              label="저장하기"
+              variant="primary"
+              onClick={handleDownload}
+            />
           </div>
         </div>
       </div>

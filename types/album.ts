@@ -136,12 +136,3 @@ export interface ReactionToggleResponse {
   message: string;
   result: ReactionToggleResult;
 }
-
-export type PhotoItem = {
-  id: number;
-  category: string;
-  writer: string;
-  imgUrl: string;
-  date: string;
-  reactions: ReactionData[];
-};
