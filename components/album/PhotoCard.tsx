@@ -3,13 +3,15 @@
 import Image from 'next/image';
 import React from 'react';
 
-interface PhtoProps {
+interface PhotoProps {
   id: number;
   category: string;
   writer: string;
   imgUrl: string;
   isSelected?: boolean;
   isSelectMode?: boolean;
+  onSelect?: () => void; // 선택 모드일 때 실행될 함수
+  onClick?: () => void; // 일반 모드(모달 열기)일 때 실행될 함수
 }
 
 const PhotoCard = ({
@@ -18,19 +20,28 @@ const PhotoCard = ({
   imgUrl,
   isSelected = false,
   isSelectMode = false,
+  onSelect,
   onClick,
-}: PhtoProps & { onClick: () => void }) => {
+}: PhotoProps) => {
   const isPreviewImage =
     imgUrl.startsWith('blob:') ||
     imgUrl.startsWith('data:') ||
     imgUrl.startsWith('https://');
 
+  // 모드에 따라 알맞은 클릭 이벤트를 실행하는 핸들러
+  const handleClick = () => {
+    if (isSelectMode) {
+      onSelect?.();
+    } else {
+      onClick?.();
+    }
+  };
+
   return (
     <div
-      onClick={isSelectMode ? onClick : undefined}
+      onClick={handleClick}
       className={`
-        relative aspect-square p-2 w-full rounded-xl overflow-hidden transition-all
-        ${isSelectMode ? 'cursor-pointer' : 'cursor-default'}
+        relative aspect-square p-2 w-full rounded-xl overflow-hidden transition-all cursor-pointer
       `}
     >
       {/* 배경 이미지 */}
@@ -39,7 +50,7 @@ const PhotoCard = ({
         alt={writer}
         fill
         unoptimized={isPreviewImage}
-        className=" object-cover"
+        className="object-cover"
       />
 
       {/* 오버레이 컨테이너 */}

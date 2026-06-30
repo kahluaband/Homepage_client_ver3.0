@@ -62,55 +62,55 @@ const ReactionBadge: React.FC<ReactionBadgeProps> = ({
   );
 };
 
-const ReactionStatus = () => {
-  const [reactions, setReactions] = React.useState([
-    { id: 'lovable', count: 12, isSelected: false },
-    { id: 'baffled', count: 1, isSelected: false },
-    { id: 'funny', count: 5, isSelected: false },
-  ]);
+// const ReactionStatus = () => {
+//   const [reactions, setReactions] = React.useState([
+//     { id: 'lovable', count: 0, isSelected: false },
+//     { id: 'baffled', count: 0, isSelected: false },
+//     { id: 'funny', count: 0, isSelected: false },
+//   ]);
 
-  const handleToggle = (id: string) => {
-    setReactions((prev) =>
-      prev.map((reac) => {
-        // 1. 현재 클릭한 아이콘인 경우
-        if (reac.id === id) {
-          const nextSelected = !reac.isSelected;
-          return {
-            ...reac,
-            isSelected: nextSelected,
-            count: nextSelected ? reac.count + 1 : Math.max(0, reac.count - 1),
-          };
-        }
+// const handleToggle = (id: string) => {
+//   setReactions((prev) =>
+//     prev.map((reac) => {
+//       // 1. 현재 클릭한 아이콘인 경우
+//       if (reac.id === id) {
+//         const nextSelected = !reac.isSelected;
+//         return {
+//           ...reac,
+//           isSelected: nextSelected,
+//           count: nextSelected ? reac.count + 1 : Math.max(0, reac.count - 1),
+//         };
+//       }
 
-        // 2. 클릭하지 않은 나머지 아이콘들
-        // 만약 이전에 선택되어 있었다면(isSelected: true), 다시 false로 바꾸고 카운트를 -1 해줌
-        if (reac.isSelected) {
-          return {
-            ...reac,
-            isSelected: false,
-            count: Math.max(0, reac.count - 1),
-          };
-        }
+//       // 2. 클릭하지 않은 나머지 아이콘들
+//       // 만약 이전에 선택되어 있었다면(isSelected: true), 다시 false로 바꾸고 카운트를 -1 해줌
+//       if (reac.isSelected) {
+//         return {
+//           ...reac,
+//           isSelected: false,
+//           count: Math.max(0, reac.count - 1),
+//         };
+//       }
 
-        // 3. 선택되지 않았던 나머지 아이콘들은 그대로 유지
-        return reac;
-      })
-    );
-  };
+//       // 3. 선택되지 않았던 나머지 아이콘들은 그대로 유지
+//       return reac;
+//     })
+//   );
+// };
 
-  return (
-    <div className="flex flex-wrap gap-2">
-      {reactions.map((reac) => (
-        <ReactionBadge
-          key={reac.id}
-          type={reac.id}
-          count={reac.count}
-          isSelected={reac.isSelected}
-          onClick={() => handleToggle(reac.id)}
-        />
-      ))}
-    </div>
-  );
-};
+//   return (
+//     <div className="flex flex-wrap gap-2">
+//       {reactions.map((reac) => (
+//         <ReactionBadge
+//           key={reac.id}
+//           type={reac.id}
+//           count={reac.count}
+//           isSelected={reac.isSelected}
+//           onClick={() => handleToggle(reac.id)}
+//         />
+//       ))}
+//     </div>
+//   );
+// };
 
-export default ReactionStatus;
+export default ReactionBadge;
