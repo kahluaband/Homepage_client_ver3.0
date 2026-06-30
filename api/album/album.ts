@@ -5,6 +5,7 @@ import type {
   AlbumPhotosResponse,
   PhotoDownloadResponse,
   PhotoUploadResponse,
+  PhotoDetailResult,
   PresignedUrlResponse,
 } from '@/types/album';
 
@@ -80,4 +81,13 @@ export const uploadPhotosToAlbum = async (
     { photos }
   );
   return res.data.result.uploadedPhotos;
+};
+
+// 사진 상세 조회
+export const getDetailedPhotoInfo = async (
+  albumId: number,
+  photoId: number
+): Promise<PhotoDetailResult> => {
+  const res = await authInstance.get(`/albums/${albumId}/photos/${photoId}`);
+  return res.data.result;
 };

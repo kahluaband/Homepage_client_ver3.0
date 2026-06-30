@@ -3,15 +3,20 @@
 import React, { useState } from 'react';
 import PhotoCard from './PhotoCard';
 import PhotoModal from './PhotoModal';
+import { getDetailedPhotoInfo } from '@/api/album/album';
+import { ReactionData } from '@/types/album';
 
 type PhotoItem = {
   id: number;
   category: string;
   writer: string;
   imgUrl: string;
+  date: string;
+  reactions?: ReactionData[]; // ✨ any 대신 정확한 타입 지정!
 };
 
 interface PhotoListProps {
+  albumId: number;
   photos: PhotoItem[];
   selectedPhotoIds?: number[];
   onToggle?: (id: number) => void;
@@ -19,6 +24,7 @@ interface PhotoListProps {
 }
 
 const PhotoList = ({
+  albumId,
   photos,
   selectedPhotoIds = [],
   onToggle = () => {},
@@ -27,9 +33,23 @@ const PhotoList = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoItem | null>(null);
 
-  const handlePhotoClick = (photo: PhotoItem) => {
+  const handlePhotoClick = async (photo: PhotoItem) => {
     setSelectedPhoto(photo);
     setIsModalOpen(true);
+
+    try {
+      const detailData = await getDetailedPhotoInfo(albumId, photo.id);
+
+      setSelectedPhoto({
+        ...photo,
+        imgUrl: detailData.originalUrl,
+        writer: detailData.uploader.name,
+        reactions: detailData.reactions,
+        date: detailData.createdAt,
+      });
+    } catch (error) {
+      console.error('상세 정보를 불러오지 못했습니다.', error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -39,7 +59,6 @@ const PhotoList = ({
 
   return (
     <>
-      {/* 📸 사진 리스트 영역 */}
       <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
         {photos.map((photo) => (
           <PhotoCard

@@ -91,3 +91,24 @@ export type PhotoUploadResponse = {
     uploadedPhotos: UploadedPhoto[];
   };
 };
+
+export type ReactionData = {
+  id: string;
+  count: number;
+  isSelected: boolean;
+};
+
+interface UploaderInfo {
+  id: number;
+  name: string;
+  term: string;
+}
+
+export interface PhotoDetailResult {
+  photoId: number;
+  originalUrl: string;
+  category: string;
+  uploader: UploaderInfo;
+  createdAt: string;
+  reactions: ReactionData[];
+}

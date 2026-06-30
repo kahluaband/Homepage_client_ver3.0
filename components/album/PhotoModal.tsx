@@ -2,7 +2,6 @@
 
 import React, { useEffect } from 'react';
 import Button from './Button';
-import ReactionSelector from './ReactionSelector';
 import Icons from './Icons';
 import Image from 'next/image';
 import ReactionWidget from './ReactionWidget';
@@ -12,6 +11,7 @@ type PhotoItem = {
   category: string;
   writer: string;
   imgUrl: string;
+  date: string;
 };
 
 interface PhotoModalProps {
@@ -71,7 +71,7 @@ const PhotoModal = ({ isOpen, onClose, photo }: PhotoModalProps) => {
                 {photo.writer}
               </span>
               <span className="text-[14px] font-medium text-gray-400">
-                작성일 {/* 실제 연동 시 {photo.date} 등으로 변경 */}
+                {photo.date}
               </span>
             </div>
             <div className="relative z-10">

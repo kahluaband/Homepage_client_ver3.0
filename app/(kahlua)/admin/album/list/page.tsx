@@ -43,6 +43,7 @@ const toPhotoItem = (photo: AlbumPhoto) => ({
   imgUrl: fixUrl(photo.thumbnailUrl),
   category: CATEGORY_KO[photo.category] ?? photo.category,
   writer: photo.uploaderName,
+  date: photo.createdAt,
 });
 
 const AlbumListPage = () => {
@@ -245,6 +246,7 @@ const AlbumListPage = () => {
 
             <div id="photo-list" onClick={(e) => e.stopPropagation()}>
               <PhotoList
+                albumId={ALBUM_ID}
                 photos={photoItems}
                 selectedPhotoIds={selectedPhotoIds}
                 onToggle={handleToggle}
