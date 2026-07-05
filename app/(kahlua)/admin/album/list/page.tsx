@@ -226,7 +226,7 @@ const AlbumListPage = () => {
     });
 
     if (validPhotoIdsToDelete.length === 0) {
-      alert('삭제할 수 있는 사진이 없습니다.');
+      alert('낵가 업로드한 사진만 삭제할 수 있습니다.');
       setIsDeleteModalOpen(false);
       return;
     }
