@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
 import Icons from './Icons';
@@ -10,7 +9,7 @@ import { AlbumPhoto } from '@/types/album';
 import { getPhotoDownloadUrl, deleteAlbumPhotos } from '@/api/album/album';
 import { formatDateTimeMinute } from '@/utils/dateUtils';
 import ModalBase from './Modal';
-import { usePhotoOwnership } from '@/hooks/usePhotoOwnership';
+import { useUserStore } from '@/store/useUserStore';
 
 interface PhotoModalProps {
   albumId: number;
@@ -29,9 +28,8 @@ const PhotoModal = ({
 }: PhotoModalProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  const router = useRouter();
-
-  const { isMyPhoto } = usePhotoOwnership(albumId, photo?.photoId);
+  const myUserId = useUserStore((state) => state.userId);
+  const isMyPhoto = photo?.uploaderId === myUserId;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -80,7 +78,6 @@ const PhotoModal = ({
       await deleteAlbumPhotos(albumId, [photo.photoId]);
       alert('사진이 성공적으로 삭제되었습니다.');
       onClose();
-      router.refresh();
       if (onDeleteSuccess) onDeleteSuccess();
     } catch (error) {
       console.error('사진 삭제 중 오류 발생:', error);
