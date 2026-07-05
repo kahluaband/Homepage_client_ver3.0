@@ -17,6 +17,7 @@ interface PhotoModalProps {
   onClose: () => void;
   photo: AlbumPhoto | null;
   onDeleteSuccess?: () => void;
+  onReactionUpdate?: () => void;
 }
 
 const PhotoModal = ({
@@ -25,6 +26,7 @@ const PhotoModal = ({
   photo,
   albumId,
   onDeleteSuccess,
+  onReactionUpdate,
 }: PhotoModalProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -128,6 +130,7 @@ const PhotoModal = ({
                   albumId={albumId}
                   photoId={photo.photoId}
                   initialReactions={photo.reactions || []}
+                  onReactionChange={onReactionUpdate}
                 />
               </div>
             </div>
