@@ -7,7 +7,7 @@ import Image from 'next/image';
 import ReactionWidget from './ReactionWidget';
 import { AlbumPhoto } from '@/types/album';
 import { getPhotoDownloadUrl, deleteAlbumPhotos } from '@/api/album/album';
-import { formatDateTimeMinute } from '@/utils/dateUtils';
+import { formatLocalDateTimeMinute } from '@/utils/dateUtils';
 import ModalBase from './Modal';
 import { useUserStore } from '@/store/useUserStore';
 
@@ -122,7 +122,8 @@ const PhotoModal = ({
                   {photo.uploaderName}
                 </span>
                 <span className="text-[14px] font-medium text-gray-400">
-                  {photo.createdAt && formatDateTimeMinute(photo.createdAt)}
+                  {photo.createdAt &&
+                    formatLocalDateTimeMinute(photo.createdAt)}
                 </span>
               </div>
               <div className="relative z-10">
