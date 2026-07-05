@@ -17,8 +17,8 @@ import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
 import type { AlbumCategory, PhotoBase } from '@/types/album';
 
 const CATEGORY_OPTIONS: { label: string; value: AlbumCategory }[] = [
-  { label: '창립제', value: 'FOUNDING' },
-  { label: '송년회', value: 'YEAR_END' },
+  { label: '창립제', value: 'FOUNDATION_FESTIVAL' },
+  { label: '송년회', value: 'YEAR_END_PARTY' },
   { label: '공연', value: 'PERFORMANCE' },
   { label: '기타', value: 'ETC' },
 ];
@@ -69,6 +69,15 @@ const Page = () => {
       }))
     );
   }, [userName]);
+
+  useEffect(() => {
+    setPhotos((prev) =>
+      prev.map((photo) => ({
+        ...photo,
+        category: selected,
+      }))
+    );
+  }, [selected]);
 
   const openFilePicker = () => {
     fileInputRef.current?.click();
@@ -166,7 +175,7 @@ const Page = () => {
         const { s3Key } = urlList[index];
         return {
           s3Key,
-          category: photo.category as AlbumCategory,
+          category: selected,
           uploader: photo.uploaderName,
         };
       });
