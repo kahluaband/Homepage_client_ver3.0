@@ -30,7 +30,7 @@ const CATEGORIES: { label: string; value: CategoryValue }[] = [
   { label: '기타', value: 'ETC' },
 ];
 
-const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
+// const fixUrl = (url: string) => url.replace(/(amazonaws\.com)([^/])/, '$1/$2');
 
 // const CATEGORY_KO: Record<string, string> = {
 //   FOUNDATION_FESTIVAL: '창립제',
@@ -301,6 +301,11 @@ const AlbumListPage = () => {
                 selectedPhotoIds={selectedPhotoIds}
                 onToggle={handleToggle}
                 isSelectMode={isSelectMode}
+                onDeleteSuccess={(deletedPhotoId) => {
+                  setPhotos((prev) =>
+                    prev.filter((p) => p.photoId !== deletedPhotoId)
+                  );
+                }}
               />
               {isLoading && (
                 <p className="text-center text-sm text-gray-2 py-6">
