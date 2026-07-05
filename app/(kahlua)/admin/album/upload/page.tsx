@@ -12,7 +12,7 @@ import Button from '@/components/album/Button';
 import Category from '@/components/album/Category';
 import Dropdown from '@/components/album/Dropdown';
 import Modal from '@/components/album/Modal';
-import PhotoList from '@/components/album/PhotoList';
+import PhotoCard from '@/components/album/PhotoCard';
 import PhotoPlus from '@/public/image/album/icons/photo-plus.svg';
 import type { AlbumCategory, PhotoBase } from '@/types/album';
 
@@ -111,6 +111,19 @@ const Page = () => {
     });
 
     setPhotos((prev) => [...prev, ...nextPhotos]);
+  };
+
+  const removePhoto = (photoId: number) => {
+    setPhotos((prev) => {
+      const target = prev.find((photo) => photo.photoId === photoId);
+      if (target) {
+        URL.revokeObjectURL(target.thumbnailUrl);
+        createdUrlsRef.current = createdUrlsRef.current.filter(
+          (url) => url !== target.thumbnailUrl
+        );
+      }
+      return prev.filter((photo) => photo.photoId !== photoId);
+    });
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -268,7 +281,18 @@ const Page = () => {
                   </button>
                 )}
               </div>
-              <PhotoList photos={photos} albumId={albumId} />
+              <div className="grid w-full grid-cols-1 gap-5 p-5 mb:grid-cols-2 pad:grid-cols-3 dt:grid-cols-4">
+                {photos.map((photo) => (
+                  <PhotoCard
+                    key={photo.photoId}
+                    id={photo.photoId}
+                    category={photo.category}
+                    writer={photo.uploaderName}
+                    imgUrl={photo.thumbnailUrl}
+                    onClick={() => removePhoto(photo.photoId)}
+                  />
+                ))}
+              </div>
             </>
           ) : (
             <>
