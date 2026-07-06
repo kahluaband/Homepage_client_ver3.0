@@ -79,10 +79,10 @@ const ModalBase = ({
     >
       <div
         className={clsx(
-          'w-[clamp(328px,calc(220px+30vw),470px)] max-w-[calc(100vw-32px)] rounded-[30px] bg-gray-0 px-[32px] py-[12px] text-center',
+          'w-[clamp(240px,calc(220px+30vw),328px)] max-w-[calc(100vw-32px)] rounded-[30px] bg-gray-0 px-[32px] py-[24px] text-center',
           'pad:w-[470px] pad:max-w-none',
           'pad:px-[60px] pad:py-[28px]',
-          'dt:h-[350px] dt:w-[560px] dt:px-[68px] dt:py-[42px]',
+          'dt:h-[320px] dt:w-[520px] dt:px-[68px] dt:py-[42px]',
           className
         )}
       >
@@ -90,13 +90,13 @@ const ModalBase = ({
           {mainText &&
             renderStyledChild(
               mainText,
-              'mx-auto max-w-[8.5em] text-balance font-pretendard text-[24px] font-semibold text-black pad:max-w-[10em] pad:text-[32px] dt:max-w-[11em] dt:text-[32px]',
+              'mx-auto max-w-[8.5em] text-balance font-pretendard text-[16px] font-semibold text-black pad:max-w-[10em] pad:text-[22px] dt:max-w-[11em] dt:text-[24px]',
               'h2'
             )}
           {subText &&
             renderStyledChild(
               subText,
-              'mx-auto mt-1 max-w-[15em] text-balance font-pretendard text-[16px] font-medium leading-[150%] text-black pad:max-w-[16em] pad:text-[20px] dt:max-w-[17em] dt:text-[24px]',
+              'mx-auto mt-1 max-w-[15em] text-balance font-pretendard text-[14px] font-medium leading-[150%] text-black pad:max-w-[16em] pad:text-[18px] dt:max-w-[16em] dt:text-[20px]',
               'p'
             )}
           {actions.length > 0 && (
