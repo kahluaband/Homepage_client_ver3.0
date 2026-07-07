@@ -34,11 +34,11 @@ const Button = ({
       'bg-blue-main text-gray-0',
       'hover:bg-gray-1 hover:text-blue-main',
       'active:ring-2 active:ring-blue-main',
-      'px-[24px] text-md',
+      'px-[24px]',
       // 532~833
       'min-[532px]:px-[32px] min-[532px]:title-sm',
       // 834~
-      'pad:px-[60px] pad:title-lg pad:text-[32px]'
+      'pad:px-[60px] pad:title-lg pad:text-[20px]'
     ),
     secondary: clsx(
       'bg-blue-main text-gray-0',
@@ -46,7 +46,7 @@ const Button = ({
       'active:ring-2 active:ring-blue-main',
       'px-[32px] text-[14px] title-sm',
       // 834~
-      'pad:px-[60px] pad:title-lg pad:text-lg'
+      'pad:px-[60px] pad:title-lg pad:text-[20px]'
     ),
     cancel: clsx(
       'bg-gray-1 text-blue-dark',
