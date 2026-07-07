@@ -52,7 +52,7 @@ const Banner = () => {
             />
           </div>
         </section>
-        <hr className="border-gray-2 border-2 my-14" />
+        <hr className="border-gray-1 border-[1.5px] my-14" />
       </div>
     </div>
   );
