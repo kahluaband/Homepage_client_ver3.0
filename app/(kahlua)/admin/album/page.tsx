@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { getAlbumPhotos } from '@/api/album/album';
+import { getAlbumPhotos, getMyTermAlbumId } from '@/api/album/album';
 import { getUserInfo } from '@/api/user/user';
 import Banner from '@/components/ui/Banner';
 import AlbumFolder from '@/components/album/AlbumFolder';
@@ -14,6 +14,7 @@ const Page = () => {
 
   const { userTerm: crewAlbumId, setUserTerm } = useUserStore();
   const [latestThumbnail, setLatestThumbnail] = useState<string | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,6 +35,24 @@ const Page = () => {
       }
     })();
   }, [crewAlbumId, setUserTerm]);
+
+  const handleCrewAlbumClick = async () => {
+    if (!crewAlbumId) {
+      alert('기수 정보를 불러오는 중입니다. 잠시만 기다려주세요');
+      return;
+    }
+
+    try {
+      setIsNavigating(true);
+      const realAlbumId = await getMyTermAlbumId();
+      router.push(`/admin/album/${realAlbumId}/list`);
+    } catch (error) {
+      console.error('기수 앨범 진입 실패:', error);
+      alert('앨범 정보를 불러오는데 실패했습니다.');
+    } finally {
+      setIsNavigating(false);
+    }
+  };
 
   return (
     <div className="w-full font-pretendard relative mx-auto h-auto flex flex-col justify-center mt-20 pad:w-[786px] dt:w-[1200px] gap-[64px]">
@@ -77,15 +96,10 @@ const Page = () => {
           </p>
           <button
             className="w-[172px] h-[43px] bg-red-main rounded-[43px] text-[24px] font-medium text-gray-0"
-            onClick={() => {
-              if (crewAlbumId) {
-                router.push(`/admin/album/${crewAlbumId}/list`);
-              } else {
-                alert('기수 정보를 불러오는 중입니다. 잠시만 기다려주세요!');
-              }
-            }}
+            onClick={handleCrewAlbumClick}
+            disabled={isNavigating}
           >
-            보러가기
+            {isNavigating ? '이동 중...' : '보러가기'}
           </button>
         </div>
       </div>
