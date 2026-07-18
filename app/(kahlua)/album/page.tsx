@@ -58,7 +58,7 @@ const Page = () => {
 
     try {
       const realAlbumId = await getMyTermAlbumId();
-      router.push(`/admin/album/${realAlbumId}/list`);
+      router.push(`/album/${realAlbumId}/list`);
     } catch (error) {
       console.error('기수 앨범 진입 실패:', error);
       alert('앨범 정보를 불러오는데 실패했습니다.');
@@ -82,27 +82,20 @@ const Page = () => {
 
       <div className="flex flex-col gap-[160px] items-center justify-center pad:gap-[76px] dt:flex-row dt:gap-[254px]">
         <div className="flex flex-col gap-8 items-center">
-          <AlbumFolder
-            type="KAHLUA"
-            thumbnailUrl={kahluaThumbnail ?? '/image/album/thumbnail_ex.jpg'}
-          />
+          <AlbumFolder type="KAHLUA" thumbnailUrl={kahluaThumbnail ?? ''} />
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             깔루아 공유 앨범
           </p>
           <button
             className="w-[172px] h-[43px] bg-yellow-main rounded-[43px] text-[24px] font-medium"
-            onClick={() => router.push('/admin/album/1/list')}
+            onClick={() => router.push('/album/1/list')}
           >
             보러가기
           </button>
         </div>
 
         <div className="flex flex-col gap-8 items-center">
-          <AlbumFolder
-            type="CREW"
-            // 💡 5. crewThumbnail 상태를 연결! (없으면 기본 이미지)
-            thumbnailUrl={crewThumbnail ?? '/image/album/thumbnail_ex.jpg'}
-          />
+          <AlbumFolder type="CREW" thumbnailUrl={crewThumbnail ?? ''} />
           <p className="font-pretendard text-center text-black text-[24px] font-semibold">
             {crewAlbumId ? `${crewAlbumId}기 공유 앨범` : '기수별 공유 앨범'}
           </p>
