@@ -1,0 +1,4 @@
+allowBuilds:
+  deasync: true
+  sharp: true
+  unrs-resolver: true
