@@ -2,8 +2,8 @@ import Card from './Card';
 import OneImage from './OneImage';
 import TwoImages from './TwoImages';
 
-import ensemble1 from '@/public/image/about/kahula_ensemble_1.jpg';
-import ensemble2 from '@/public/image/about/kahula_ensemble_2.jpg';
+import ensemble1 from '@/public/image/about/kahula_ensemble_1.avif';
+import ensemble2 from '@/public/image/about/kahula_ensemble_2.avif';
 import ensemble3 from '@/public/image/about/ensemble3.avif';
 import music from '@/public/image/about/music.svg';
 
